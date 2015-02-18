@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<h2><center>Waterwall Temperature Plot</center></h2>
+<h2><center>Solar WaterWall Temperatures Plot</center></h2>
 <div id="chart_container">
     <div id="chart"></div>
     <div id="legend_container">
@@ -76,9 +76,8 @@ function loadRefresh() {
     };
     refresh = 1;
     xively.feed.history(feed, query, loadData); 
-    var d = new Date();
-    var t = d.toLocaleTimeString();
-    document.getElementById("lastupdate").innerHTML = "Last Updated:<br>" + t;
+    var t = moment().format("h:mmA");
+    document.getElementById("lastupdate").innerHTML = "Updated:" + t;
 }
 
 function loadData(data) {  
