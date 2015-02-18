@@ -1,0 +1,187 @@
+<!doctype>
+<head>
+	<link type="text/css" rel="stylesheet" href="css/graph.css">
+	<link type="text/css" rel="stylesheet" href="css/detail.css">
+	<link type="text/css" rel="stylesheet" href="css/legend.css">
+	<link type="text/css" rel="stylesheet" href="css/lines.css">
+	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+
+	<script src="vendor/d3.js"></script>
+	<script src="rickshaw.js"></script>
+        <script src="vendor/moment.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+        <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.3.min.js"></script>  
+</head>
+<body>
+
+<h2><center>Waterwall Temperature Plot</center></h2>
+<div id="chart_container">
+    <div id="chart"></div>
+    <div id="legend_container">
+       <div id="tdstamp"></div>
+          <p id="lastupdate"></p>
+       <div id="legend"></div>
+    </div>
+    <div id="slider"></div>
+</div>
+
+<script>
+
+// fix timezone with hack rickshaw.js and change toUTCString to toLocaleString
+
+xively.setKey( "C3Fsyg875-Wkk4_r9lWbvG8g6mKSAKxwbVF3Nkt6cDNMQT0g" );  
+
+var feed = "1389033602";  // air
+//r feed = "1385833385";  // wifi
+//r feed = "1661645997";  // house
+
+var channels = 'TempWW1';
+var channels = 'TempWW2,TempWW5';
+var channels = 'TempWW1,TempWW2,TempWW3,TempWW4,TempWW5,Temperature2,Temperature3';
+
+var loadCount = 0;
+var series = [];
+var lasttime = moment();
+var refresh = 0;
+var graph;
+setInterval(function(){loadRefresh()}, 60000);
+loadLoop();
+
+function loadLoop() {
+    var h = 48 - 6*loadCount;
+//  var starttime = moment().subtract(h, "hours").fromNow();
+    var starttime = moment().subtract(h, "hours").startOf('hour');
+    var query = { 
+	datastreams: channels,
+	start: starttime.toJSON(), 
+        duration: '6hours',
+	interval: 120, 
+	limit: 1000,
+    };
+    console.log(loadCount, h, query);
+    xively.feed.history(feed, query, loadData); 
+}
+
+
+function loadRefresh() {
+    var stoptime  = moment();
+    var starttime = lasttime;
+    var query = { 
+	datastreams: channels,
+	start: starttime.toJSON(), 
+	stop:  stoptime.toJSON(), 
+	interval: 120, 
+	limit: 1000,
+    };
+    refresh = 1;
+    xively.feed.history(feed, query, loadData); 
+    var d = new Date();
+    var t = d.toLocaleTimeString();
+    document.getElementById("lastupdate").innerHTML = "Last Updated:<br>" + t;
+}
+
+function loadData(data) {  
+    var palette = new Rickshaw.Color.Palette();
+    var filtedData1 = data.datastreams;
+
+// Find channel with minimum number of datapoints ... series must have the same number of points.  zeroFill is yucky.
+
+    for (var i1=0; i1 < filtedData1.length; i1++ ) {
+	var filtedData2 = filtedData1[i1].datapoints;
+	var id = filtedData1[i1].id;
+	if (filtedData2 && filtedData2.length) {
+	    if (loadCount == 0) {
+		var id = filtedData1[i1].id;
+		if (id == 'TempWW1') {id = 'Floor'}
+		if (id == 'TempWW2') {id = 'Counter1'}
+		if (id == 'TempWW3') {id = 'Counter2'}
+		if (id == 'TempWW4') {id = 'Ceiling'}
+		if (id == 'TempWW5') {id = 'Upstairs'}
+		if (id == 'Temperature2') {id = 'Downstairs'}
+		if (id == 'Temperature3') {id = 'Upstairs'}
+		series.push({name: id, color: palette.color(), data: []});
+	    }
+	    for (var i2=0; i2 < filtedData2.length; i2++ ) {
+		lasttime  = moment(filtedData2[i2].at);
+		var date  = moment(filtedData2[i2].at).unix();
+		var value = parseFloat(filtedData2[i2].value)
+		if (date && value) {
+		    series[i1].data.push({x: date, y: value});
+		}
+	    }
+	} 
+    }	
+   console.log("refresh", refresh, loadCount);
+    if (refresh) {
+	graph.update();
+    }
+    else if (loadCount++ < 7) {
+	loadLoop();
+    }
+    else {
+//      Rickshaw.Series.zeroFill(series);  // Will add zero values to series with missing data, otherwise plot will abort with unmatched x data.
+	drawGraph(series);
+    }
+
+}
+
+function drawGraph(data) {
+//  console.log(data);
+    graph = new Rickshaw.Graph( {
+	element: document.querySelector("#chart"),
+	width:  2400,
+	height: 1400,
+	min: 'auto',
+	renderer: 'line',
+	series: data
+    } );
+    graph.render();
+
+    var resize = function() {
+	graph.configure({
+	    width: window.innerWidth * 0.9,
+	    height: window.innerHeight * 0.9
+	});
+	graph.render();
+    }
+    window.addEventListener('resize', resize); 
+
+//  var slider = new Rickshaw.Graph.RangeSlider.Preview({
+    var slider = new Rickshaw.Graph.RangeSlider({
+	graph: graph,
+	element: document.getElementById('slider')
+    });
+
+    var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+	graph: graph
+    } );
+
+    var legend = new Rickshaw.Graph.Legend( {
+	graph: graph,
+	element: document.getElementById('legend')
+    } );
+
+    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
+	graph: graph,
+	legend: legend
+    } );
+
+    var axes = new Rickshaw.Graph.Axis.Time( {
+	graph: graph
+    });
+    axes.render();
+
+    var yAxis = new Rickshaw.Graph.Axis.Y({
+	graph: graph
+    });
+    yAxis.render();
+
+
+}
+
+</script>
+
+
+</body>
+
