@@ -19,10 +19,14 @@
     <div id="chart"></div>
     <div id="legend_container">
       <p id="lastupdate"></p>
+      <form id="date_form" action="" method="GET">
+	Days_Ago:    <input type="text"   name="days_ago"  size="2">
+	Days_Length: <input type="text"   name="days_len" size="2">
+              <input type="button" name="button" value="Submit" onclick="change_days(this.form)">
+      </form>
       <div id="legend"></div>
     </div>
     <div id="slider"></div>
-  </div>
   <script>
     xively.setKey( "C3Fsyg875-Wkk4_r9lWbvG8g6mKSAKxwbVF3Nkt6cDNMQT0g" );  
     plotit('551172181', 'TempTub,TempInlet,Pump');

@@ -1,51 +1,31 @@
 <!doctype>
 <head>
-	<link type="text/css" rel="stylesheet" href="css/graph.css">
-	<link type="text/css" rel="stylesheet" href="css/detail.css">
-	<link type="text/css" rel="stylesheet" href="css/legend.css">
-	<link type="text/css" rel="stylesheet" href="css/lines.css">
-	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
-
-	<script src="vendor/d3.js"></script>
-	<script src="vendor/rickshaw.js"></script>
-        <script src="vendor/moment.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
-        <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.3.min.js"></script>  
-
-	<script src="plotit.js"></script>
+  <link type="text/css" rel="stylesheet" href="css/graph.css">
+  <link type="text/css" rel="stylesheet" href="css/detail.css">
+  <link type="text/css" rel="stylesheet" href="css/legend.css">
+  <link type="text/css" rel="stylesheet" href="css/lines.css">
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+  <script src="vendor/d3.js"></script>
+  <script src="vendor/rickshaw.js"></script>
+  <script src="vendor/moment.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+  <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.3.min.js"></script>  
+  <script src="plotit.js"></script>
 </head>
 <body>
-
-<h2><center>Solar WaterWall Temperatures Plot</center></h2>
-<div id="chart_container">
+  <h2><center>WiFi Strengths</center></h2>
+  <div id="chart_container">
     <div id="chart"></div>
     <div id="legend_container">
-       <div id="tdstamp"></div>
-          <p id="lastupdate"></p>
-       <div id="legend"></div>
+      <p id="lastupdate"></p>
+      <div id="legend"></div>
     </div>
     <div id="slider"></div>
-</div>
-
-<script>
-
-// fix timezone with hack rickshaw.js and change toUTCString to toLocaleString
-
-xively.setKey( "C3Fsyg875-Wkk4_r9lWbvG8g6mKSAKxwbVF3Nkt6cDNMQT0g" );  
-
-var feed = "1389033602";  // air
-//r feed = "1385833385";  // wifi
-//r feed = "1661645997";  // house
-
-var channels = 'TempWW1';
-var channels = 'TempWW2,TempWW5';
-var channels = 'TempWW1,TempWW2,TempWW3,TempWW4,TempWW5,Temperature2,Temperature3';
-
-plotit();
-
-</script>
-
-
+  </div>
+  <script>
+    xively.setKey( "C3Fsyg875-Wkk4_r9lWbvG8g6mKSAKxwbVF3Nkt6cDNMQT0g" );  
+    plotit('1385833385', 'yun1,yun2,yun3,yun4');
+  </script>
 </body>
 

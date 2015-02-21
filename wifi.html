@@ -19,6 +19,11 @@
     <div id="chart"></div>
     <div id="legend_container">
       <p id="lastupdate"></p>
+      <form id="date_form" action="" method="GET">
+	Days_Ago:    <input type="text"   name="days_ago"  size="2">
+	Days_Length: <input type="text"   name="days_len" size="2">
+              <input type="button" name="button" value="Submit" onclick="change_days(this.form)">
+      </form>
       <div id="legend"></div>
     </div>
     <div id="slider"></div>
