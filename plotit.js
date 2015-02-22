@@ -7,7 +7,7 @@ var graph;
 var feed;
 var channels;
 var days_ago = 0;
-var days_len = 2;
+var days_len = 1.5;
 var scale_solar = 0;
 
 function plotit(a1, a2) {
