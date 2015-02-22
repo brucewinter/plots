@@ -8,6 +8,7 @@ var feed;
 var channels;
 var days_ago = 0;
 var days_len = 2;
+var scale_solar = 0;
 
 function plotit(a1, a2) {
     feed     = a1;
@@ -20,11 +21,12 @@ function plotit(a1, a2) {
 
 function change_days (form) {
     series = [];
-    clearGraph();
     loadCount1 = 0;
     lasttime = moment();
     days_len = parseInt(form.days_len.value);
     days_ago = parseInt(form.days_ago.value);
+    console.log(days_len, days_ago);
+    clearGraph();
     loadLoop();
 }
 
@@ -75,23 +77,20 @@ function loadData(data) {
     for (var i1=0; i1 < filtedData1.length; i1++ ) {
 	var filtedData2 = filtedData1[i1].datapoints;
 	var id = filtedData1[i1].id;
+	if (loadCount1 == 0) {
+	    if (id.search(/temp/i) > -1) {scale_solar = 1}
+	    if (id == 'TempWW1') {id = 'Midway'}
+	    if (id == 'TempWW2') {id = 'Tank1Top'}
+	    if (id == 'TempWW3') {id = 'Tank2Top'}
+	    if (id == 'TempWW4') {id = 'Tank1Bottom'}
+	    if (id == 'TempWW5') {id = 'Tank2Bottom'}
+	    if (id == 'Temperature1') {id = 'Outside'}
+	    if (id == 'Temperature2') {id = 'Downstairs'}
+	    if (id == 'Temperature3') {id = 'Upstairs'}
+	    var myscale = scale1;
+	    series.push({name: id, color: palette.color(), data: [], scale: myscale});
+	}
 	if (filtedData2 && filtedData2.length) {
-	    if (loadCount1 == 0) {
-		var id = filtedData1[i1].id;
-		if (id == 'TempWW1') {id = 'AirTop'}
-		if (id == 'TempWW2') {id = 'AirBottom'}
-		if (id == 'TempWW3') {id = 'WaterTop'}
-		if (id == 'TempWW4') {id = 'WaterBottom'}
-		if (id == 'TempWW5') {id = 'WaterBlue'}
-		if (id == 'Temperature1') {id = 'Outside'}
-		if (id == 'Temperature2') {id = 'Downstairs'}
-		if (id == 'Temperature3') {id = 'Upstairs'}
-		var myscale = scale1;
-//		if (id == 'Pump' || id == 'TD_Inlet_Tub') {
-//		    myscale = scale2;
-//		}
-		series.push({name: id, color: palette.color(), data: [], scale: myscale});
-	    }
 	    for (var i2=0; i2 < filtedData2.length; i2++ ) {
 		lasttime  = moment(filtedData2[i2].at);
 		var date  = moment(filtedData2[i2].at).unix();
@@ -100,7 +99,7 @@ function loadData(data) {
 		    value *=  10;
 		    value +=  80;
 		}
-		else if (id == 'Solar') {
+		else if (id == 'Solar' && scale_solar == 1) {
 		    value /= 200;
 		    value +=  80;
 		}
