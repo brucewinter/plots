@@ -13,6 +13,7 @@ var scale_solar = 0;
 function plotit(a1, a2) {
     feed     = a1;
     channels = a2;
+    if (channels.search(/temp/i) > -1) {scale_solar = 1}
     setInterval(function(){loadRefresh()}, 120000);
     date_form.days_ago.value = days_ago;
     date_form.days_len.value = days_len;
@@ -78,7 +79,6 @@ function loadData(data) {
 	var filtedData2 = filtedData1[i1].datapoints;
 	var id = filtedData1[i1].id;
 	if (loadCount1 == 0) {
-	    if (id.search(/temp/i) > -1) {scale_solar = 1}
 	    if (id == 'TempWW1') {id = 'Midway'}
 	    if (id == 'TempWW2') {id = 'Tank1Top'}
 	    if (id == 'TempWW3') {id = 'Tank2Top'}
