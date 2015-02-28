@@ -80,10 +80,11 @@ function loadData(data) {
 	var id = filtedData1[i1].id;
 	if (loadCount1 == 0) {
 	    if (id == 'TempWW1') {id = 'Midway'}
-	    if (id == 'TempWW2') {id = 'Tank1Top'}
-	    if (id == 'TempWW3') {id = 'Tank2Top'}
-	    if (id == 'TempWW4') {id = 'Tank1Bottom'}
-	    if (id == 'TempWW5') {id = 'Tank2Bottom'}
+	    if (id == 'TempWW2') {id = 'Tank1'}
+	    if (id == 'TempWW3') {id = 'Tank3'}
+	    if (id == 'TempWW4') {id = 'Tank2'}
+	    if (id == 'TempWW5') {id = 'Tank4'}
+
 	    if (id == 'Temperature1') {id = 'Outside'}
 	    if (id == 'Temperature2') {id = 'Downstairs'}
 	    if (id == 'Temperature3') {id = 'Upstairs'}
