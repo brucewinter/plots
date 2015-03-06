@@ -30,7 +30,7 @@
   </div>
   <script>
     xively.setKey( "C3Fsyg875-Wkk4_r9lWbvG8g6mKSAKxwbVF3Nkt6cDNMQT0g" );  
-    plotit('1389033602', 'TempWW1,TempWW2,TempWW3,TempWW4,TempWW5,Temperature1,Temperature2,Temperature3');
+    plotit('1389033602', 'TempWW1,TempWW2,TempWW3,TempWW4,TempWW5,Temperature1,Temperature2,Temperature3,Solar');
   </script>
 </body>
 
