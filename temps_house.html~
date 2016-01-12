@@ -1,0 +1,36 @@
+<!doctype>
+<head>
+  <link type="text/css" rel="stylesheet" href="css/graph.css">
+  <link type="text/css" rel="stylesheet" href="css/detail.css">
+  <link type="text/css" rel="stylesheet" href="css/legend.css">
+  <link type="text/css" rel="stylesheet" href="css/lines.css">
+  <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+  <script src="vendor/d3.js"></script>
+  <script src="vendor/rickshaw.js"></script>
+  <script src="vendor/moment.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+  <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.3.min.js"></script>  
+  <script src="plotit.js"></script>
+</head>
+<body>
+  <h2><center>Solar WaterWall Temperatures Plot</center></h2>
+  <div id="chart_container">
+    <div id="chart"></div>
+    <div id="legend_container">
+      <p id="lastupdate"></p>
+      <form id="date_form" action="" method="GET">
+	Days_Ago:    <input type="text"   name="days_ago"  size="2">
+	Days_Length: <input type="text"   name="days_len" size="2">
+              <input type="button" name="button" value="Submit" onclick="change_days(this.form)">
+      </form>
+      <div id="legend"></div>
+    </div>
+    <div id="slider"></div>
+  </div>
+  <script>
+    xively.setKey( "C3Fsyg875-Wkk4_r9lWbvG8g6mKSAKxwbVF3Nkt6cDNMQT0g" );  
+    plotit('1389033602', 'TempWW1,TempWW2,TempWW3,TempWW4,TempWW5,Temperature1,Temperature3,Solar');
+  </script>
+</body>
+

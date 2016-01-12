@@ -105,6 +105,9 @@ function loadData(data) {
 		    value /= 200;
 		    value +=  80;
 		}
+		else if (id == '1_Power' && scale_solar == 1) {
+		    value /= 200;
+		}
 		if (date) {
 		    series[i1].data.push({x: date, y: value});
 		}
@@ -187,11 +190,11 @@ function drawGraph(data) {
     });
     yAxis.render();
 
-    var smoother = new Rickshaw.Graph.Smoother( {
-	graph: graph,
-// 	element: document.querySelector('#smoother')
-    } );
-    smoother.setScale(2);
+//    var smoother = new Rickshaw.Graph.Smoother( {
+//	graph: graph,
+//// 	element: document.querySelector('#smoother')
+//    } );
+//    smoother.setScale(2);
 
 }
 
