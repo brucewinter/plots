@@ -197,15 +197,11 @@ function drawGraph(data) {
 //    smoother.setScale(2);
 
 
-// Bummer, this does not work
     $('.x_ticks_d3 text').css('opacity', '1.0');//fix text opacity
-    $('.x_ticks_d3 .tick').css('stroke-width', '0px');//text smoothing
     $('#x_axis text').css('fill', 'white');//text color
+    $('.x_ticks_d3 .tick').css('stroke-width', '0px');//text smoothing
     $('#x_axis path').css('opacity', '0');//remove line or
     $('#x_axis path').css('stroke', 'white');//change line color
-
-    $('#yaxis text').css('fill', 'white');
-    $('#yaxis path').css('stroke', 'white');
 
 }
 

@@ -7,7 +7,7 @@ var graph;
 var feed;
 var channels;
 var days_ago = 0;
-var days_len = 1.5;
+var days_len = 0.5;
 var scale_solar = 0;
 
 function plotit(a1, a2) {
@@ -105,6 +105,9 @@ function loadData(data) {
 		    value /= 200;
 		    value +=  80;
 		}
+		else if (id == '1_Power' && scale_solar == 1) {
+		    value /= 200;
+		}
 		if (date) {
 		    series[i1].data.push({x: date, y: value});
 		}
@@ -192,6 +195,16 @@ function drawGraph(data) {
 //// 	element: document.querySelector('#smoother')
 //    } );
 //    smoother.setScale(2);
+
+
+    $('.x_ticks_d3 text').css('opacity', '1.0');//fix text opacity
+    $('#x_axis text').css('fill', 'white');//text color
+    $('.x_ticks_d3 .tick').css('stroke-width', '0px');//text smoothing
+    $('#x_axis path').css('opacity', '0');//remove line or
+    $('#x_axis path').css('stroke', 'white');//change line color
+
+    $('#yaxis text').css('fill', 'white');
+    $('#yaxis path').css('stroke', 'white');
 
 }
 
