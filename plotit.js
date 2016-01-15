@@ -136,8 +136,6 @@ function drawGraph(data) {
     graph = new Rickshaw.Graph( {
 	element: document.getElementById("chart"),
 //	element: document.querySelector("#chart"),
-	width:  1200,
-	height:  700,
 //	width:  2400,
 //	height: 1400,
 	min: 'auto',
@@ -159,8 +157,8 @@ function drawGraph(data) {
 
     var resize = function() {
 	graph.configure({
-	    width: window.innerWidth * 0.9,
-	    height: window.innerHeight * 0.8
+	    width:   window.innerWidth   - 200 ,
+	    height:  window.innerHeight  - 100
 	});
 	graph.render();
 	slider.build();
