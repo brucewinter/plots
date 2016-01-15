@@ -63,11 +63,8 @@ function loadRefresh() {
     document.getElementById("lastupdate").innerHTML = "Updated:" + t;
 }
 
-function scale1(y) {
-    return y/2;
-}
-var scale1 = d3.scale.linear().domain([0,1]).nice()
-//var scale2 = d3.scale.linear().domain([0,.01]).nice()
+var scale1 = d3.scale.linear().domain([40,90]).nice()
+var scale2 = d3.scale.linear().domain([0,20000]).nice()
 
 function loadData(data) {  
     var palette = new Rickshaw.Color.Palette();
@@ -88,8 +85,12 @@ function loadData(data) {
 	    if (id == 'Temperature1') {id = 'Outside'}
 	    if (id == 'Temperature2') {id = 'Basement'}
 	    if (id == 'Temperature3') {id = 'Upstairs'}
-	    var myscale = scale1;
-	    series.push({name: id, color: palette.color(), data: [], scale: myscale});
+	    if (id == '1_Power') {
+		series.push({name: id, color: palette.color(), data: [], scale: scale2});
+	    }
+	    else {
+		series.push({name: id, color: palette.color(), data: [], scale: scale1});
+	    }
 	}
 	if (filtedData2 && filtedData2.length) {
 	    for (var i2=0; i2 < filtedData2.length; i2++ ) {
@@ -105,8 +106,9 @@ function loadData(data) {
 		    value /= 200;
 		    value +=  80;
 		}
-		else if (id == '1_Power' && scale_solar == 1) {
+		else if (id == 'x1_Power' && scale_solar == 1) {
 		    value /= 200;
+		    value +=  30;
 		}
 		if (date) {
 		    series[i1].data.push({x: date, y: value});
@@ -115,6 +117,7 @@ function loadData(data) {
 	} 
     }	
 //  console.log("refresh", refresh, loadCount1);
+
     if (refresh) {
 	graph.update();
     }
@@ -131,7 +134,8 @@ function loadData(data) {
 function drawGraph(data) {
 //  console.log(data);
     graph = new Rickshaw.Graph( {
-	element: document.querySelector("#chart"),
+	element: document.getElementById("chart"),
+//	element: document.querySelector("#chart"),
 	width:  1200,
 	height:  700,
 //	width:  2400,
@@ -179,16 +183,39 @@ function drawGraph(data) {
 	legend: legend
     } );
 
-    var axes = new Rickshaw.Graph.Axis.Time( {
+    var xaxis = new Rickshaw.Graph.Axis.Time( {
 	graph: graph
     });
-    axes.render();
+// Bummer, this does not work
+    $('.x_ticks_d3 text').css('opacity', '1.0');//fix text opacity
+    $('.x_ticks_d3 .tick').css('stroke-width', '0px');//text smoothing
+    $('#xaxis text').css('fill', 'white');//text color
+    $('#xaxis path').css('opacity', '0');//remove line or
+    $('#xaxis path').css('stroke', 'white');//change line color
+    xaxis.render();
 
-    var yAxis = new Rickshaw.Graph.Axis.Y({
+    yAxis1 = new Rickshaw.Graph.Axis.Y.Scaled({
+	element: document.getElementById('yaxis1'),
 	graph: graph,
-	scale: scale1
+	scale: scale1,
+	tickFormat: Rickshaw.Fixtures.Number.formatKMBT
     });
-    yAxis.render();
+    yAxis1.render();
+
+    yAxis2 = new Rickshaw.Graph.Axis.Y.Scaled({
+	element: document.getElementById('yaxis2'),
+	graph: graph,
+	grid: false,
+	scale: scale2,
+	tickFormat: Rickshaw.Fixtures.Number.formatKMBT
+    });
+    $('#yaxis2 path').css('stroke', 'white');//change line color
+//    ${'#yaxis2').css('position', 'absolute');
+//    ${'#yaxis2').css('left', '1250px');
+//    ${'#yaxis2').css('height', '800px');
+//    ${'#yaxis2').css('width', '40px');
+    yAxis2.render();
+
 
 //    var smoother = new Rickshaw.Graph.Smoother( {
 //	graph: graph,
@@ -196,16 +223,6 @@ function drawGraph(data) {
 //    } );
 //    smoother.setScale(2);
 
-
-// Bummer, this does not work
-    $('.x_ticks_d3 text').css('opacity', '1.0');//fix text opacity
-    $('.x_ticks_d3 .tick').css('stroke-width', '0px');//text smoothing
-    $('#x_axis text').css('fill', 'white');//text color
-    $('#x_axis path').css('opacity', '0');//remove line or
-    $('#x_axis path').css('stroke', 'white');//change line color
-
-    $('#yaxis text').css('fill', 'white');
-    $('#yaxis path').css('stroke', 'white');
 
 }
 
