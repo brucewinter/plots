@@ -30,37 +30,30 @@ function pb_setup() {
     }
     websocket = new WebSocket('wss://stream.pushbullet.com/websocket/' + pb_key);
     websocket.onopen = function(e) {
-//      misterhouse.innerHTML += "<p>WebSocket onopen</p>";
+//      misterhouse.innerHTML = "<p>WebSocket onopen</p>";
+	pb_update();
     }
     websocket.onmessage = function(e) {
-//      misterhouse.innerHTML += "<p>" + e.data + "</p>";
 	var msg = JSON.parse(e.data);
 //      misterhouse.innerHTML = "<p>mt=" + msg.type + "...</p>";
 	if (msg.type == 'tickle' && msg.subtype == 'push' ) {
-//     --data-urlencode active="true" \
-//     --data-urlencode modified_after="1.4e+09" \
-	    var xhr = new XMLHttpRequest()
-	    xhr.open("GET", "https://api.pushbullet.com/v2/pushes?modified_after=0&limit=2", false)
-	    xhr.setRequestHeader("Access-Token", pb_key)
-	    xhr.send()
-	    var msg = JSON.parse(xhr.responseText);
-            misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:5.0em;font-weight:bold'>" + msg.pushes[0].body + "<\h1>";
+	    pb_update();
 	}
-
-//  "pushes": [
-//    {
-//      "active": true,
-//      "body": "Space Elevator, Mars Hyperloop, Space Model S (Model Space?)",
-//      "created": 1.412047948579029e+09,
-
-
     }
     websocket.onerror = function(e) {
-	misterhouse.innerHTML += "<p>WebSocket onerror</p>";
+	misterhouse.innerHTML = "<p>WebSocket onerror</p>";
     }
     websocket.onclose = function(e) {
-	misterhouse.innerHTML += "<p>WebSocket onclose</p>";
+	misterhouse.innerHTML = "<p>WebSocket onclose</p>";
     }
+}
+function pb_update() {
+    var xhr = new XMLHttpRequest()
+    xhr.open("GET", "https://api.pushbullet.com/v2/pushes?modified_after=0&limit=2", false)
+    xhr.setRequestHeader("Access-Token", pb_key)
+    xhr.send()
+    var msg = JSON.parse(xhr.responseText);
+    misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:5.0em;font-weight:bold'>" + msg.pushes[0].body + "<\h1>";
 }
 
 function change_days (form) {
