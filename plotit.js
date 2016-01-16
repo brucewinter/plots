@@ -9,6 +9,8 @@ var channels;
 var days_ago = 0;
 var days_len = 0.5;
 var scale_solar = 0;
+var pb_key='o.daPpkzz8GM7d1FoLJGTLLcecbmmSruqD';
+var websocket;
 
 function plotit(a1, a2) {
     feed     = a1;
@@ -18,6 +20,47 @@ function plotit(a1, a2) {
     date_form.days_ago.value = days_ago;
     date_form.days_len.value = days_len;
     loadLoop();
+    pb_setup();
+}
+
+// Debug with http://jsfiddle.net/pushbullet/u92DA/
+function pb_setup() {
+    if (websocket != null) {
+        websocket.close();
+    }
+    websocket = new WebSocket('wss://stream.pushbullet.com/websocket/' + pb_key);
+    websocket.onopen = function(e) {
+//      misterhouse.innerHTML += "<p>WebSocket onopen</p>";
+    }
+    websocket.onmessage = function(e) {
+//      misterhouse.innerHTML += "<p>" + e.data + "</p>";
+	var msg = JSON.parse(e.data);
+//      misterhouse.innerHTML = "<p>mt=" + msg.type + "...</p>";
+	if (msg.type == 'tickle' && msg.subtype == 'push' ) {
+//     --data-urlencode active="true" \
+//     --data-urlencode modified_after="1.4e+09" \
+	    var xhr = new XMLHttpRequest()
+	    xhr.open("GET", "https://api.pushbullet.com/v2/pushes?modified_after=0&limit=2", false)
+	    xhr.setRequestHeader("Access-Token", pb_key)
+	    xhr.send()
+	    var msg = JSON.parse(xhr.responseText);
+            misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:5.0em;font-weight:bold'>" + msg.pushes[0].body + "<\h1>";
+	}
+
+//  "pushes": [
+//    {
+//      "active": true,
+//      "body": "Space Elevator, Mars Hyperloop, Space Model S (Model Space?)",
+//      "created": 1.412047948579029e+09,
+
+
+    }
+    websocket.onerror = function(e) {
+	misterhouse.innerHTML += "<p>WebSocket onerror</p>";
+    }
+    websocket.onclose = function(e) {
+	misterhouse.innerHTML += "<p>WebSocket onclose</p>";
+    }
 }
 
 function change_days (form) {
@@ -158,7 +201,7 @@ function drawGraph(data) {
     var resize = function() {
 	graph.configure({
 	    width:   window.innerWidth   - 200 ,
-	    height:  window.innerHeight  - 100
+	    height:  window.innerHeight  - 250
 	});
 	graph.render();
 	slider.build();
