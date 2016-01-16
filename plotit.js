@@ -53,7 +53,7 @@ function pb_update() {
     xhr.setRequestHeader("Access-Token", pb_key)
     xhr.send()
     var msg = JSON.parse(xhr.responseText);
-    misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:5.0em;font-weight:bold'>" + msg.pushes[0].body + "<\h1>";
+    misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:3.0em;font-weight:bold'>" + msg.pushes[0].body + "<\h1>";
 }
 
 function change_days (form) {
@@ -231,6 +231,7 @@ function drawGraph(data) {
     yAxis1 = new Rickshaw.Graph.Axis.Y.Scaled({
 	element: document.getElementById('yaxis1'),
 	graph: graph,
+	grid: true,
 	scale: scale1,
 	tickFormat: Rickshaw.Fixtures.Number.formatKMBT
     });
