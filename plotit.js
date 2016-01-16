@@ -194,7 +194,7 @@ function drawGraph(data) {
     var resize = function() {
 	graph.configure({
 	    width:   window.innerWidth   - 200 ,
-	    height:  window.innerHeight  -  50
+	    height:  window.innerHeight  - 150
 	});
 	graph.render();
 	slider.build();
