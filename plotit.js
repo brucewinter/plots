@@ -96,10 +96,10 @@ function loadRefresh() {
     refresh = 1;
     xively.feed.history(feed, query, loadData); 
     var t = moment().format("h:mmA");
-    document.getElementById("lastupdate").innerHTML = "Updated:" + t;
+    document.getElementById("lastupdate").innerHTML = t;
 }
 
-var scale1 = d3.scale.linear().domain([40,90]).nice()
+var scale1 = d3.scale.linear().domain([40,80]).nice()
 var scale2 = d3.scale.linear().domain([0,20000]).nice()
 
 function loadData(data) {  
@@ -193,7 +193,7 @@ function drawGraph(data) {
 
     var resize = function() {
 	graph.configure({
-	    width:   window.innerWidth   - 200 ,
+	    width:   window.innerWidth   - 250 ,
 	    height:  window.innerHeight  - 100
 	});
 	graph.render();

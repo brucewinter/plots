@@ -4,6 +4,7 @@
   <link type="text/css" rel="stylesheet" href="css/detail.css">
   <link type="text/css" rel="stylesheet" href="css/legend.css">
   <link type="text/css" rel="stylesheet" href="css/lines.css">
+  <link type="text/css" rel="stylesheet" href="css/plotit.css">
   <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
   <script src="vendor/d3.js"></script>
   <script src="vendor/rickshaw.js"></script>
@@ -12,14 +13,16 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
   <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.3.min.js"></script>  
   <script src="plotit.js"></script>
+  <script src="clock.js"></script>
 </head>
 <body style="background-color: #2C3539">
 <!-- pick color with: http://www.computerhope.com/cgi-bin/htmlcolor.pl?c=2C3539-->
   <div id="misterhouse"></div>
   <div id="chart_container">
-    <div id="chart"></div>
+    <div id="chart"></div>o
     <div id="legend_container">
-      <p id="lastupdate"></p>
+      <div id="clock"      style="font-size:34px;color:#00aaff;text-shadow:2px 2px 2px blue; border:3px groove blue;background-color:#aaffaa; width:195px; height:40px"></div>
+      <div id="lastupdate" style="font-size:34px;color:#00aaff;text-shadow:2px 2px 2px blue; border:3px groove blue;background-color:#aaffaa; width:195px; height:40px"></div>
       <form id="date_form" action="" method="GET">
 	Days_Ago:    <input type="text"   name="days_ago"  size="2">
 	Days_Length: <input type="text"   name="days_len" size="2">
