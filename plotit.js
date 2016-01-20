@@ -47,13 +47,25 @@ function pb_setup() {
 	misterhouse.innerHTML = "<p>WebSocket onclose</p>";
     }
 }
+
+// Not sure how to target just this 'device_ident'.  For now, must push to all devices for this to work   
+// Example responseText
+//{"active":true,"iden":"ujvabP5zvSCsjz75FtmGdw","created":1.453219745895587e+09,"modified":1.4532197459005928e+09,"type":"note","dismissed":false,"direction":"self","sender_iden":"ujvabP5zvSC","sender_email":"brucewinter@gmail.com","sender_email_normalized":"brucewinter@gmail.com","sender_name":"Bruce Winter","receiver_iden":"ujvabP5zvSC","receiver_email":"brucewinter@gmail.com","receiver_email_normalized":"brucewinter@gmail.com","title":"Misterhouse","body":"10:09 AM: hi 7"},
+
 function pb_update() {
     var xhr = new XMLHttpRequest()
     xhr.open("GET", "https://api.pushbullet.com/v2/pushes?modified_after=0&limit=2", false)
     xhr.setRequestHeader("Access-Token", pb_key)
     xhr.send()
     var msg = JSON.parse(xhr.responseText);
-    misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:3.0em;font-weight:bold'>" + msg.pushes[0].body + "<\h1>";
+    var text = msg.pushes[0].body;
+    if (text.indexOf("Nest Temps") > -1) {
+	nest_data.innerHTML = text;
+    }
+    else {
+	misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:3.0em;font-weight:bold'>" + text + "<\h1>";
+    }
+//  misterhouse.innerHTML += "<h2>db1: " + xhr.responseText + "...<\h2>";
 }
 
 function change_days (form) {
