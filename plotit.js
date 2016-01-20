@@ -59,8 +59,8 @@ function pb_update() {
     xhr.send()
     var msg = JSON.parse(xhr.responseText);
     var text = msg.pushes[0].body;
-    if (text.indexOf("Nest Temps") > -1) {
-	nest_data.innerHTML = text;
+    if (text.indexOf("Nest") > -1) {
+	air_data.innerHTML = text;
     }
     else {
 	misterhouse.innerHTML = "<h1 align='center' style='color:white;font-size:3.0em;font-weight:bold'>" + text + "<\h1>";
@@ -107,8 +107,8 @@ function loadRefresh() {
     };
     refresh = 1;
     xively.feed.history(feed, query, loadData); 
-    var t = moment().format("h:mmA");
-    document.getElementById("lastupdate").innerHTML = t;
+    var t = moment().format("h:mm");
+    document.getElementById("lastupdate").innerHTML = "Updated: " + t;
 }
 
 var scale1 = d3.scale.linear().domain([40,80]).nice()
@@ -205,7 +205,7 @@ function drawGraph(data) {
 
     var resize = function() {
 	graph.configure({
-	    width:   window.innerWidth   - 250 ,
+	    width:   window.innerWidth   - 350 ,
 	    height:  window.innerHeight  - 100
 	});
 	graph.render();
